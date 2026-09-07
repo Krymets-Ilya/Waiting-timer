@@ -2,7 +2,8 @@ name: Bootstrap and Build Android
 
 on:
   push:
-    branches: [ prototype-v1 ]
+    branches:
+      - prototype-v1
   workflow_dispatch:
 
 permissions:
@@ -20,19 +21,8 @@ jobs:
         shell: bash
         run: |
           if [ ! -f app/src/main/AndroidManifest.xml ]; then
-            python3 - <<'PY'
-          from pathlib import Path
-          import base64, re, tarfile
-          source = Path('.github/workflows/android.yml').read_text()
-          chunks = re.findall(r'[A-Za-z0-9+/=]{1000,}', source)
-          if not chunks:
-              raise SystemExit('Embedded source payload not found')
-          payload = max(chunks, key=len)
-          archive = Path('/tmp/waiting-src.tgz')
-          archive.write_bytes(base64.b64decode(payload))
-          with tarfile.open(archive, 'r:gz') as tf:
-              tf.extractall('.')
-          PY
+            grep '^H4s' .github/workflows/android.yml | tr -d '\n' | base64 -d > /tmp/waiting-src.tgz
+            tar -xzf /tmp/waiting-src.tgz
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git add settings.gradle build.gradle .gitignore app
