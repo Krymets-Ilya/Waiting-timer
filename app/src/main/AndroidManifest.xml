@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:label="Waiting / Wasting"
         android:icon="@android:drawable/ic_lock_idle_alarm"
-        android:theme="@android:style/Theme.Material.DayNight.NoActionBar"
+        android:theme="@style/AppTheme"
         android:supportsRtl="true">
 
         <activity
