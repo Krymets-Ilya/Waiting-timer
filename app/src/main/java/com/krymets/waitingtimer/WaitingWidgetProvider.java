@@ -49,7 +49,7 @@ public class WaitingWidgetProvider extends AppWidgetProvider {
             rv.setViewVisibility(R.id.widget_object, View.VISIBLE);
             rv.setTextViewText(R.id.widget_object, active.objectName != null ? active.objectName : "Ожидание");
             rv.setViewVisibility(R.id.widget_chronometer, View.VISIBLE);
-            long base = SystemClock.elapsedRealtime() - Math.max(0, System.currentTimeMillis() - active.startedAt);
+            long base = SystemClock.elapsedRealtime() - AppDb.activeDuration(active);
             rv.setChronometer(R.id.widget_chronometer, base, null, true);
             rv.setViewVisibility(R.id.widget_summary, View.GONE);
             rv.setTextViewText(R.id.widget_action, "STOP");
